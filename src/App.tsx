@@ -1,26 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Nav from "./components/Nav";
+import {Route, Routes} from "react-router-dom";
+import Favorite from "./components/Favorite";
+import Home from "./components/Home";
+import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const client = new ApolloClient({
+        uri: 'https://spacex-production.up.railway.app/',
+        cache: new InMemoryCache(),
+    });
+    return (
+        <ApolloProvider client={client}>
+            <>
+                <Nav/>
+                <Routes>
+                    <Route index element={<Home/>}/>
+                    <Route path="/:favorite" element={<Favorite/>}/>
+                </Routes>
+            </>
+        </ApolloProvider>
+    )
 }
 
 export default App;
